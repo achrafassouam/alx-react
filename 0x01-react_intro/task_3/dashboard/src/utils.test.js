@@ -1,7 +1,6 @@
 function getFullYear() {
   return new Date().getFullYear();
 }
-  
 
 describe('getFullYear', () => {
   it('should return the correct year', () => {
