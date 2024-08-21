@@ -11,7 +11,12 @@ const getFooterCopy = (isIndex) => {
 	}
 }
 
+const getLatestNotification = () => {
+	return "<strong>Urgent requirement</strong> - complete by EOD";
+};
+
 module.exports = {
 	getFooterCopy,
 	getFullYear,
+	getLatestNotification,
 };

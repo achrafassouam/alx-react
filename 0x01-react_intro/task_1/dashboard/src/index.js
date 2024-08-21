@@ -4,16 +4,12 @@ import App from './App';
 import Notifications from './Notifications';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <Notifications />
+    <App />
   </React.StrictMode>,
   document.getElementById('root-notifications')
 );
