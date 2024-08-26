@@ -1,7 +1,30 @@
-export const getFullYear = () => new Date().getFullYear();
+function getFullYear() {
+  return new Date().getFullYear();
+}
 
-export const getFooterCopy = (isIndex) =>
-	isIndex ? 'Holberton School' : 'Holberton School main dashboard';
+describe('getFullYear', () => {
+  it('should return the correct year', () => {
+    const mockDate = new Date('2024-01-01');
+    jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+	
+    const year = getFullYear();
+    expect(year).toBe(2024);
+    jest.restoreAllMocks(); // Restore the original Date object
+  });
+});
 
-export const getLatestNotification = () =>
-	'<strong>Urgent Requirement</strong> - complete by EOD';
+function getFooterCopy(isTrue) {
+  return isTrue ? 'Footer text for true' : 'Footer text for false';
+}
+
+describe('getFooterCopy', () => {
+  it('should return the correct string when the argument is true', () => {
+    const result = getFooterCopy(true);
+    expect(result).toBe('Footer text for true');
+  });
+
+  it('should return the correct string when the argument is false', () => {
+    const result = getFooterCopy(false);
+    expect(result).toBe('Footer text for false');
+  });
+});
