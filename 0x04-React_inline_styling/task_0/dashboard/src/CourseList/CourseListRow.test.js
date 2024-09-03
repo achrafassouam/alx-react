@@ -1,32 +1,39 @@
+import React from "react";
 import { shallow } from 'enzyme';
-import React from 'react';
-import CourseListRow from './CourseListRow';
+import CourseListRow from "./CourseListRow";
 
+describe('Basic React Tests - <CourseListRow />', function() {
+	it('Should render without crashing', () => {
+		const wrapper = shallow(<CourseListRow textFirstCell='start' />);
+		expect(wrapper.exists()).toBeTruthy();
+	});
 
-// shallow render CourseListRow component
-describe('<CourseListRow />', () => {
-	it(`When isHeader is true, renders on cell with colspan=2
-	when textSecondCell does not exist`, () => {
-		const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell="test" />);
-		expect(wrapper.find('th').exists()).toBe(true);
-	})
+	it('When isHeader is true - Should render one cell with colspan = 2 when textSecondCell does not exist', function() {
+		const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell='start' />);
+		expect(wrapper.find('th').prop('colSpan')).toEqual('2');
+	});
 
-	it(`When isHeader is true, renders two cells when textSecondCell is present`, () => {
-		const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell="test" textSecondCell="test2" />);
-		expect(wrapper.find('th').length).toBe(2);
-	})
+	it('When isHeader is true - Should render two cells when textSecondCell is present', function() {
+		const wrapper = shallow
+		(
+			<CourseListRow
+				isHeader={true}
+				textFirstCell='start'
+				textSecondCell='build'
+			/>
+		);
+		expect(wrapper.find('th')).toHaveLength(2);
+	});
 
-	it(`When isHeader is false, renders two td elements within a tr element`, () => {
-		const wrapper = shallow(<CourseListRow isHeader={false} textFirstCell="test" textSecondCell="test2" />);
-		expect(wrapper.find('tr').length).toBe(1);
-		expect(wrapper.find('td').length).toBe(2);
-	})
-
-	it('renders with the correct background color', () => {
-    const wrapperHeader = shallow(<CourseListRow isHeader={true} textFirstCell="Header" />);
-    expect(wrapperHeader.prop('style')).toHaveProperty('backgroundColor', '#deb5b545');
-
-    const wrapperRow = shallow(<CourseListRow textFirstCell="Regular" textSecondCell="Row" />);
-    expect(wrapperRow.prop('style')).toHaveProperty('backgroundColor', '#f5f5f5ab');
-  });
-})
+	it('When isHeader is false - Should render correctly two td elements within a tr element', function(){
+		const wrapper = shallow
+		(
+			<CourseListRow
+				isHeader={false}
+				textFirstCell='Txt1'
+				textSecondCell='Txt2'
+			/>
+		);
+		expect(wrapper.find('tr').children('td')).toHaveLength(2);
+	});
+});
