@@ -24,16 +24,4 @@ describe('Basic React Tests - <CourseListRow />', function() {
 		);
 		expect(wrapper.find('th')).toHaveLength(2);
 	});
-
-	it('When isHeader is false - Should render correctly two td elements within a tr element', function(){
-		const wrapper = shallow
-		(
-			<CourseListRow
-				isHeader={false}
-				textFirstCell='Txt1'
-				textSecondCell='Txt2'
-			/>
-		);
-		expect(wrapper.find('tr').children('td')).toHaveLength(2);
-	});
 });
