@@ -1,6 +1,7 @@
 import React from 'react';
-import BodySection from './BodySection';
 import { shallow } from 'enzyme';
+import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
+import BodySection from './BodySection';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 beforeEach(() => {
@@ -10,18 +11,13 @@ afterEach(() => {
 	StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
 });
 
-describe('BodySection tests', () => {
-	it('should render correctly', () => {
-		const wrapper = shallow(
-			<BodySection title='test title'>
-				<p>test children node</p>
-			</BodySection>
-		);
+describe('BodySectionWithMarginBottom tests', () => {
+	it('should apply margin bottom to child component', () => {
+		const wrapper = shallow(<BodySectionWithMarginBottom title='test title' />);
 
-		expect(wrapper.exists()).toBe(true);
-		expect(wrapper.exists('h2')).toBe(true);
-		expect(wrapper.find('h2').html()).toEqual('<h2>test title</h2>');
-		expect(wrapper.exists('p')).toBe(true);
-		expect(wrapper.find('p').text()).toEqual('test children node');
+		expect(wrapper.find(BodySection)).toHaveLength(1);
+		expect(wrapper.find(BodySection).html()).toEqual(
+			'<div class="bodySection"><h2>test title</h2></div>'
+		);
 	});
 });
