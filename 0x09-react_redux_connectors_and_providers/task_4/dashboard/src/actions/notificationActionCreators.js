@@ -1,21 +1,15 @@
-import { MARK_AS_READ, SET_TYPE_FILTER } from "./notificationActionTypes";
+import { selectCourse, unSelectCourse } from "./courseActionCreators";
+import { SELECT_COURSE, UNSELECT_COURSE } from "./courseActionTypes";
 
-export const markAsAread = (index) => {
-  return {
-    type: MARK_AS_READ,
-    index,
-  };
-};
+describe("action creators tests", function () {
+  it("selectCourse should return: { type: SELECT_COURSE, index: 1 }", function () {
+    const result = selectCourse(1);
 
-export const boundMarkAsAread = (index) => dispatch(markAsAread(index));
+    expect(result).toEqual({ type: SELECT_COURSE, index: 1 });
+  });
+  it("unSelectCourse should return: { type: UNSELECT_COURSE, index: 1 }", function () {
+    const result = unSelectCourse(1);
 
-export const setNotificationFilter = (filter) => {
-  return {
-    type: SET_TYPE_FILTER,
-    filter,
-  };
-};
-
-export const boundSetNotificationFilter = (filter) =>
-  dispatch(setNotificationFilter(filter));
-  
+    expect(result).toEqual({ type: UNSELECT_COURSE, index: 1 });
+  });
+});
