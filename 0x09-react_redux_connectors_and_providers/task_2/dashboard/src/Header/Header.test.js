@@ -1,34 +1,43 @@
-import uiReducer, { initialState } from "./uiReducer";
-import { LOGIN, DISPLAY_NOTIFICATION_DRAWER } from "../actions/uiActionTypes";
+import { shallow, mount } from 'enzyme';
+import React from 'react';
+import { Header } from './Header';
+import { StyleSheetTestUtils } from 'aphrodite';
+import AppContext, { user, logOut } from '../App/AppContext';
 
-const USER = { email: "larry@hudson.com", password: "123456" };
+const USER = { email: 'michael@mifflin.com', password: 'pippity' };
 
-describe("uiReducer tests", function () {
-  it("verifies the state returned by the uiReducer function equals the initial state when no action is passed", function () {
-    const state = uiReducer(undefined, {});
+describe('<Header />', () => {
+	beforeAll(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+	afterAll(() => {
+		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+	});
 
-    expect(state.toJS()).toEqual(initialState);
-  });
-  it("verifies the state returned by the uiReducer function equals the initial state when the action SELECT_COURSE is passed", function () {
-    const state = uiReducer(undefined, { type: "SELECT_COURSE" });
+	it('Header renders without crashing', () => {
+		const wrapper = shallow(<Header />);
+		expect(wrapper.exists()).toEqual(true);
+	});
+	it('verifies that the components render img', () => {
+		const wrapper = shallow(<Header user={USER} />);
+		wrapper.update();
+		expect(wrapper.find('div img')).toHaveLength(1);
+	});
+	it('verifies that the components render h1', () => {
+		const wrapper = shallow(<Header user={USER} />);
+		wrapper.update();
+		expect(wrapper.find('div h1')).toHaveLength(1);
+	});
 
-    expect(state.toJS()).toEqual(initialState);
-  });
-  it("verifies the state returned by the uiReducer function, when the action DISPLAY_NOTIFICATION_DRAWER is passed, changes correctly the isNotificationDrawerVisible property", function () {
-    const state = uiReducer(undefined, { type: DISPLAY_NOTIFICATION_DRAWER });
+	it('mounts the Header component with a default context value. The logoutSection is not created', () => {
+		const wrapper = shallow(<Header />);
 
-    expect(state.toJS()).toEqual({
-      ...initialState,
-      isNotificationDrawerVisible: true,
-    });
-  });
+		expect(wrapper.find('#logoutSection')).toHaveLength(0);
+	});
 
-  it("verifies the state returned by the uiReducer function, when the action LOGIN is passed, changes correctly the user property", function () {
-    const state = uiReducer(undefined, { type: LOGIN, user: USER });
+	it('mounts the Header component with a user defined (isLoggedIn is true and an email is set). The logoutSection is created', () => {
+		const wrapper = shallow(<Header user={USER} />);
 
-    expect(state.toJS()).toEqual({
-      ...initialState,
-      user: USER,
-    });
-  });
+		expect(wrapper.find('#logoutSection')).toHaveLength(1);
+	});
 });
