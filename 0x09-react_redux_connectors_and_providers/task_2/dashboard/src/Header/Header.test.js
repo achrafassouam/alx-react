@@ -1,45 +1,34 @@
-/**
- * @jest-environment jsdom
- */
+import uiReducer, { initialState } from "./uiReducer";
+import { LOGIN, DISPLAY_NOTIFICATION_DRAWER } from "../actions/uiActionTypes";
 
-import React from "react";
-import { shallow, mount } from "enzyme";
-import Header from "./Header";
-import { AppContext } from '../App/AppContext';
-import { StyleSheetTestUtils } from 'aphrodite';
+const USER = { email: "larry@hudson.com", password: "123456" };
 
-StyleSheetTestUtils.suppressStyleInjection();
+describe("uiReducer tests", function () {
+  it("verifies the state returned by the uiReducer function equals the initial state when no action is passed", function () {
+    const state = uiReducer(undefined, {});
 
-describe("<Header />", () => {
-  it('renders a <Header /> component', () => {
-    const wrapper = shallow(<AppContext.Provider><Header /></AppContext.Provider>);
-    expect(wrapper).toHaveLength(1);
-	});
+    expect(state.toJS()).toEqual(initialState);
+  });
+  it("verifies the state returned by the uiReducer function equals the initial state when the action SELECT_COURSE is passed", function () {
+    const state = uiReducer(undefined, { type: "SELECT_COURSE" });
 
-  it('mounts a <Header /> component and checks contents', () => {
-    const value = { user: {email: '', password: '', isLoggedIn: false}, logOut: () => {} }
-    const wrapper = mount(<AppContext.Provider value={value}><Header /></AppContext.Provider>);
-    expect(wrapper.find('header h1')).toHaveLength(1);
-    expect(wrapper.find('header img')).toHaveLength(1);
-	});
+    expect(state.toJS()).toEqual(initialState);
+  });
+  it("verifies the state returned by the uiReducer function, when the action DISPLAY_NOTIFICATION_DRAWER is passed, changes correctly the isNotificationDrawerVisible property", function () {
+    const state = uiReducer(undefined, { type: DISPLAY_NOTIFICATION_DRAWER });
 
-  it('mounts a <Header /> component with default context and verifies that logoutSection is not created', () => {
-    const value = { user: { email: '', password: '', isLoggedIn: false }, logOut: () => {} }
-    const wrapper = mount(<AppContext.Provider value={value}><Header /></AppContext.Provider>);
-    expect(wrapper.find('#logoutSection')).toHaveLength(0);
-	});
+    expect(state.toJS()).toEqual({
+      ...initialState,
+      isNotificationDrawerVisible: true,
+    });
+  });
 
-  it('mounts a <Header /> component with user defined and verifies that logoutSection is created', () => {
-    const value = { user: { email: 'thedude@aim.com', password: 'thedudeabides', isLoggedIn: true }, logOut: () => {} }
-    const wrapper = mount(<AppContext.Provider value={value}><Header /></AppContext.Provider>);
-    expect(wrapper.find('#logoutSection')).toHaveLength(1);
-	});
+  it("verifies the state returned by the uiReducer function, when the action LOGIN is passed, changes correctly the user property", function () {
+    const state = uiReducer(undefined, { type: LOGIN, user: USER });
 
-  it('mounts a <Header /> component with user defined and verifies that clicking logout link calls logOut()', () => {
-    const value = { user: { email: 'thedude@aim.com', password: 'thedudeabides', isLoggedIn: true }, logOut: () => { } }
-    const spy = jest.spyOn(value, 'logOut');
-    const wrapper = mount(<AppContext.Provider value={value}><Header /></AppContext.Provider>);
-    wrapper.find('#logoutSection span').simulate('click');
-    expect(spy).toHaveBeenCalled();
-	});
-})
+    expect(state.toJS()).toEqual({
+      ...initialState,
+      user: USER,
+    });
+  });
+});
